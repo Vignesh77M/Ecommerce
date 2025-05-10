@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Checkout</title>
+</head>
+<body>
+    <h1>Checkout</h1>
+
+    <!-- Only render if product exists -->
+    <div th:if="${product != null}">
+        <h3 th:text="${product.name}">Product Name</h3>
+        <p th:text="${product.description}">Product Description</p>
+        <p>₹<span th:text="${product.price}">Price</span></p>
+
+        <form th:action="@{/process-checkout}" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required /><br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required /><br>
+
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod" name="paymentMethod" required>
+                <option value="credit">Credit Card</option>
+                <option value="debit">Debit Card</option>
+                <option value="paypal">PayPal</option>
+            </select><br>
+
+            <!-- Hidden field for productId -->
+            <input type="hidden" th:name="'productId'" th:value="${product.id}" />
+
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+
+    <!-- Fallback error message if product is missing -->
+    <div th:if="${product == null}">
+        <p style="color:red;">Error: Product not found. Please go back and select a product.</p>
+    </div>
+</body>
+</html>

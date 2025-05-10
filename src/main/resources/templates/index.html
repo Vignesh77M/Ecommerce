@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home - My ECommerce</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1>My ECommerce</h1>
+        <nav>
+            <a href="/auth/login">🔐 Login</a>
+            <a href="/users/signup">📝 Signup</a>
+            <a href="/cart">🛒 Cart</a>
+        </nav>
+    </header>
+
+    <h2>Products</h2>
+    <div th:if="${#lists.isEmpty(products)}">
+        <p>No products available.</p>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(products)}">
+        <div class="product-container">
+            <div class="product" th:each="product : ${products}">
+                <img th:src="${product.imageUrl}" alt="Product Image">
+                <h3 th:text="${product.name}"></h3>
+                <p>₹<span th:text="${product.price}"></span></p>
+                <a th:href="@{/product/{id}(id=${product.id})}">View Details</a>
+				<button onclick="alert('Please sign up or log in first!')">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+
+     <script>
+        // Get the login status from the Thymeleaf template
+        var isLoggedIn = false;  // This will be true or false depending on user session
+
+        function addToCart(productId) {
+            if (!isLoggedIn) {
+                alert("Please sign up or log in first!");
+                window.location.href = '/users/signup'; // Redirect to sign-up page
+            } else {
+                // Proceed with adding to cart (you can implement the cart logic here)
+                alert("Product added to cart!");
+            }
+        }
+    </script>
+
+    <script src="/script.js"></script>
+</body>
+</html>
